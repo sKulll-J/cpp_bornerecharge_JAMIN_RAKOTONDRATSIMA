@@ -1,9 +1,0 @@
-#ifndef BASECLIENT_H
-#define BASECLIENT_H
-
-bool baseclient_authentifier( int numero_carte ) ;
-
-int baseclient_reprise();
-
-
-#endif // BASECLIENT_H

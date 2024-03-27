@@ -1,8 +1,0 @@
-#ifndef BOUTON_H
-#define BOUTON_H
-
-int bouton_charge();
-
-int bouton_stop();
-
-#endif
