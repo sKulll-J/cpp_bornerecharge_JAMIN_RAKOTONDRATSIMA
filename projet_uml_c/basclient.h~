@@ -1,0 +1,7 @@
+#ifndef BASECLIENT_H
+#define BASECLIENT_H
+#include <lcarte.h>
+
+void baseclient_authentifier( int numero_carte ) ;
+
+int baseclient_reprise();

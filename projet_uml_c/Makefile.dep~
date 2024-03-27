@@ -1,0 +1,5 @@
+baseclient.o : baseclient.c baseclient.h
+
+lecteurcarte.o: lecteurcarte.c lecteurcarte.h baseclient.h
+borne.o: borne.c lecteurcarte.h
+
