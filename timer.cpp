@@ -16,7 +16,7 @@ time_t start_time ;
 
 // ==========================================
 
-void Timer :: initialiser()
+void Timer :: Timer()
 {
     io=acces_memoire(&shmid);
 	now = time(NULL);

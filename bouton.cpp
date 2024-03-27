@@ -6,7 +6,7 @@
 entrees* io ;
 int shmid ;
 
-void Bouton :: init_bouton()
+void Bouton :: Bouton()
 {
 	io=acces_memoire(&shmid);
 }

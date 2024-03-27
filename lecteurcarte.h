@@ -9,7 +9,7 @@ class LecteurCarte
   	public :
 		int id_vehicule ; 
 
-		void initialiser();
+		LecteurCarte();
 		void lire_carte();
 		int get_id();
 		void attente_insertion();

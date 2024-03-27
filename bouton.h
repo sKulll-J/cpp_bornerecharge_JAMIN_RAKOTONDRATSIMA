@@ -4,7 +4,7 @@
 class Bouton
 {
     public :
-    void initialiser();
+    Bouton();
     void charge();
     int stop();
 

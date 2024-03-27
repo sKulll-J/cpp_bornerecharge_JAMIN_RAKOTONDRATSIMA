@@ -4,7 +4,7 @@
 class Timer 
 {
     public : 
-    void initialiser();
+    Timer();
     void raz();
     int elapsed();
 };

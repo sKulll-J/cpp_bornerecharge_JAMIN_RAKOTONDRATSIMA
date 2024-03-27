@@ -4,7 +4,7 @@
 class Prise 
 {
     public :
-    void initialiser();
+    Prise();
     void verouiller_trappe();
     void deverouiller_trappe();
     void set_prise(int etat);
