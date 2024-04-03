@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include <unistd.h>
 
-#include "voyant.h"
+#include "Voyant.h"
 #include "timer.h"
 
 #include<donnees_borne.h>
@@ -13,12 +13,12 @@ int shmid ;
 int timer_start   ;
 int timer_sec = 0;
 
-voyant :: voyant()
+Voyant :: Voyant()
 {
     io = access_memoire(&shmid) ;
 }
 
-void voyant :: blink_charge()
+void Voyant :: blink_charge()
 {
 	io->led_charge = OFF ;
 	usleep( 500000 ); // attente 0.5 s
@@ -26,7 +26,7 @@ void voyant :: blink_charge()
 	usleep( 500000 ); // attente 0.5 s
 }
 
-void voyant :: set_dispo(int etat)
+void Voyant :: set_dispo(int etat)
 {	
 
 	switch(etat)
@@ -43,7 +43,7 @@ void voyant :: set_dispo(int etat)
 		
 }
 
-void voyant :: set_default(int etat)
+void Voyant :: set_default(int etat)
 {	
 
 	switch(etat)
@@ -63,7 +63,7 @@ void voyant :: set_default(int etat)
 		
 }
 
-void voyant :: set_charge(int etat)
+void Voyant :: set_charge(int etat)
 {	
 
 	switch(etat)

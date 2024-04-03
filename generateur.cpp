@@ -1,11 +1,11 @@
-#include "generateur.h"
+#include "Generateur.h"
 
 #include<donnees_borne.h>
 #include<memoire_borne.h>
 
 
-#include "voyants.h"
-#include "prise.h"
+#include "voyant.h"
+#include "Prise.h"
 
 entrees* io ;
 int shmid ;
@@ -17,8 +17,8 @@ Generateur :: Generateur()
 
 Generateur :: charger()
 {
-	voyants_set_charge(2); // Voyant charge => ROUGE
-	prise_deverouiller_trappe(); 
+	Voyant :: set_charge(2); // Voyant charge => ROUGE
+	Prise_deverouiller_trappe(); 
 	
 	
 // MEF
@@ -64,34 +64,34 @@ Generateur :: charger()
 		//Block G : sorties
 		if(etat_present == A)
 		{
-			voyants_set_charge(2); // Voyant charge => Rouge
-			prise_deverouiller_trappe();
-			generateur_generer_PWM(1); // 12V DC output
+			Voyant :: set_charge(2); // Voyant charge => Rouge
+			Prise :: deverouiller_trappe();
+			Generateur :: generer_PWM(1); // 12V DC output
 	
 		}
 
 		if(etat_present == B)
 		{
-			prise_set_prise(1); // Voyant prise => Vert
-			prise_verouiller_trappe();
-			generateur_generer_PWM(2); // AC_1K output
+			Prise :: set_Prise(1); // Voyant Prise => Vert
+			Prise :: verouiller_trappe();
+			Generateur :: generer_PWM(2); // AC_1K output
 		}
 		
 		if(etat_present == C)
 		{
-			generateur_fermer_AC();
-			generateur_generer_PWM(3); // AC_CL output
+			Generateur :: fermer_AC();
+			Generateur :: generer_PWM(3); // AC_CL output
 		}
 		
 		if(etat_present == D)
 		{
-			generateur_generer_PWM(3); // AC_CL output
+			Generateur :: generer_PWM(3); // AC_CL output
 		}
 		if(etat_present == E)
 		{
-			generateur_ouvrir_AC();
-			voyants_set_charge(1); // Voyant charge => Vert
-			generateur_generer_PWM(1); // AC_CL output
+			Generateur :: ouvrir_AC();
+			voyant :: set_charge(1); // Voyant charge => Vert
+			Generateur :: generer_PWM(1); // AC_CL output
 			printf("Etat E\n");
 		}
 	}

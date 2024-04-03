@@ -1,10 +1,10 @@
-#ifndef VOYANTS_H
-#define VOYANTS_H
+#ifndef VOYANT_H
+#define VOYANT_H
 
-class voyant
+class Voyant
 {
     public :
-    voyant();
+    Voyant();
     void set_dispo(int etat);
     void set_default(int etat);
     void set_charge(int etat);
