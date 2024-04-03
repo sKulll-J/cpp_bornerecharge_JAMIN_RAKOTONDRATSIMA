@@ -9,7 +9,7 @@ class Generateur
     void ouvrir_AC();
     void fermer_AC();
     void deconnecter();
-    void charger();
+    void charger(Voyant voyant, Prise prise, Generateur generateur);
 };
 
 #endif

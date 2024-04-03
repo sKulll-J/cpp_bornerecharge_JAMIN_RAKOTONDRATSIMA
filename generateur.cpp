@@ -15,9 +15,9 @@ Generateur :: Generateur()
 	io=acces_memoire(&shmid);
 }
 
-Generateur :: charger()
+Generateur :: charger(Voyant voyant, Prise prise, Generateur generateur)
 {
-	Voyant :: set_charge(2); // Voyant charge => ROUGE
+	voyant.set_charge(2); // Voyant charge => ROUGE
 	Prise_deverouiller_trappe(); 
 	
 	
@@ -64,34 +64,34 @@ Generateur :: charger()
 		//Block G : sorties
 		if(etat_present == A)
 		{
-			Voyant :: set_charge(2); // Voyant charge => Rouge
-			Prise :: deverouiller_trappe();
-			Generateur :: generer_PWM(1); // 12V DC output
+			voyant.set_charge(2); // Voyant charge => Rouge
+			prise.deverouiller_trappe();
+			generateur.generer_PWM(1); // 12V DC output
 	
 		}
 
 		if(etat_present == B)
 		{
-			Prise :: set_Prise(1); // Voyant Prise => Vert
-			Prise :: verouiller_trappe();
-			Generateur :: generer_PWM(2); // AC_1K output
+			prise.set_Prise(1); // Voyant Prise => Vert
+			prise.verouiller_trappe();
+			generateur.generer_PWM(2); // AC_1K output
 		}
 		
 		if(etat_present == C)
 		{
-			Generateur :: fermer_AC();
-			Generateur :: generer_PWM(3); // AC_CL output
+			generateur.fermer_AC();
+			generateur.generer_PWM(3); // AC_CL output
 		}
 		
 		if(etat_present == D)
 		{
-			Generateur :: generer_PWM(3); // AC_CL output
+			generateur.generer_PWM(3); // AC_CL output
 		}
 		if(etat_present == E)
 		{
-			Generateur :: ouvrir_AC();
-			voyant :: set_charge(1); // Voyant charge => Vert
-			Generateur :: generer_PWM(1); // AC_CL output
+			generateur.ouvrir_AC();
+			voyant.set_charge(1); // Voyant charge => Vert
+			generateur.generer_PWM(1); // AC_CL output
 			printf("Etat E\n");
 		}
 	}
