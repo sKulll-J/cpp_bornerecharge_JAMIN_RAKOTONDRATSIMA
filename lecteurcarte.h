@@ -10,10 +10,13 @@ class LecteurCarte
 		int id_vehicule ; 
 
 		LecteurCarte();
-		void lire_carte();
+		// void lire_carte();
+		/*
 		int get_id();
 		void attente_insertion();
 		void attente_retrait();
+		*/
+
 
 };
 

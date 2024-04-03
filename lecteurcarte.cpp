@@ -1,11 +1,9 @@
 
 #include "lecteurcarte.h"
 
-void LecteurCarte::LecteurCarte()
+LecteurCarte::LecteurCarte()
 {
 }
 
-void LecteurCarte::lire_carte()
-{
-}
+
 
