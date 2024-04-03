@@ -6,12 +6,13 @@
 
 int main()
 {
-
+	int num_carte;
     LecteurCarte lecteurcarte;
 
     while (1)
     {
-        lecteurcarte.lire_carte();
+		if(lecteurcarte.lire_carte();
+
     }
 
 }
