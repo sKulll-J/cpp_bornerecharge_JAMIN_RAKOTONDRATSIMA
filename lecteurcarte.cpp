@@ -1,25 +1,27 @@
-
 #include "lecteurcarte.h"
 #include<iostream>
 
 using namespace std;
 
-LecteurCarte::LecteurCarte()
-{
-	
-}
-
-int LecteurCarte::lire_carte()
+LecteurCarte :: LecteurCarte()
 {
 	initialisations_ports();
-	cout<<"Lecture"<<endl;
+
+}
+void LecteurCarte :: lire_carte()
+{	
+	cout<<"==== \nnew Lecture\n"<<endl;
 	
 	cout<<"Inserez votre carte"<<endl;
 	attente_insertion_carte();
-	cout<<">Carte insérée .."<<endl<<endl;
-	cout<<">Carte numéro "<<lecture_numero_carte()<<endl;
+	
+	cout<<">Carte insérée .." << endl << endl;
+	cout<<">Carte numéro " << lecture_numero_carte() << endl;
+		
 	attente_retrait_carte();
-	liberation_ports();
+
+}
+int LecteurCarte :: get_id()
+{
 	return lecture_numero_carte();
 }
-

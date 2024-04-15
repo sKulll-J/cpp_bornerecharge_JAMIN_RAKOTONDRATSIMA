@@ -3,10 +3,10 @@
 #include<donnees_borne.h>
 #include<memoire_borne.h>
 
-entrees* io ;
-int shmid ;
+//entrees * io;
+//int shmid ;
 
-void Bouton :: Bouton()
+Bouton :: Bouton()
 {
 	io=acces_memoire(&shmid);
 }

@@ -1,21 +1,21 @@
 #include<stdio.h>
 #include <unistd.h>
 
-#include "Voyant.h"
+#include "voyant.h"
 #include "timer.h"
 
 #include<donnees_borne.h>
 #include<memoire_borne.h>
 
-entrees * io ;
+//entrees * io ;
+//int shmid ;
 
-int shmid ;
-int timer_start   ;
+int timer_start;
 int timer_sec = 0;
 
 Voyant :: Voyant()
 {
-    io = access_memoire(&shmid) ;
+    io = acces_memoire(&shmid) ;
 }
 
 void Voyant :: blink_charge()

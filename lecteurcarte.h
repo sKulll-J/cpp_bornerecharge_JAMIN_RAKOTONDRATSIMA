@@ -1,23 +1,18 @@
 #ifndef LECTEURCARTE_H
 #define LECTEURCARTE_H
+#include <lcarte.h>
+
+
 
 class LecteurCarte
-{
-	private :
-		int id ;
-
+{	
   	public :
-		int id_vehicule ; 
-
-		LecteurCarte();
-		// void lire_carte();
-		/*
-		int get_id();
-		void attente_insertion();
-		void attente_retrait();
-		*/
-
-
+  	int carte_id ;
+	
+	LecteurCarte();
+	
+	void lire_carte();
+	int get_id();
 };
 
 #endif // LECTEURCARTE_H

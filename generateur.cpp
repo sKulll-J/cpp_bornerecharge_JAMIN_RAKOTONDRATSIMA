@@ -1,63 +1,127 @@
-#include "Generateur.h"
+#include <iostream>
+#include "generateur.h"
 
 #include<donnees_borne.h>
 #include<memoire_borne.h>
 
+using namespace std;
 
-#include "voyant.h"
-#include "Prise.h"
-
-entrees* io ;
-int shmid ;
+//entrees* io ;
+//int shmid ;
 
 Generateur :: Generateur()
 {
 	io=acces_memoire(&shmid);
 }
 
-Generateur :: charger(Voyant voyant, Prise prise, Generateur generateur)
+/*
+void Generateur :: charger(Voyant voyant, Prise prise, Generateur generateur)
 {
 	voyant.set_charge(2); // Voyant charge => ROUGE
-	Prise_deverouiller_trappe(); 
+	prise.deverouiller_trappe(); 
 	
 	
 // MEF
-	typedef enum _etat {A,B,C,D,E} etat;
+	typedef enum _etat {A,B,C,D,E,F, pre_deconnect, deconnectn END} etat;
 	etat etat_present, etat_suivant ;
 	
 	// initialisation 
 	etat_present = A ;
-	etat_suivant=A;
+	etat_suivant = A ;
 	
-	while(etat_present!=E)
+	cout << "Branchez la prise\n" << endl;
+	while(etat_present!=END)
 	{
 		//Block F : transitions
-		if ((etat_present == A) && (io->gene_u == 9))
-			etat_suivant = B ;
-	
+		if ((etat_present == A) && (io->gene_u == 9) && io->gene_pwm==DC)
+		{	etat_suivant = B ;
+			cout << ">prise branchee \n" << endl ;
+		}
+		
  		else if (etat_present == B)
 		{	
-			if (io->gene_u == 9)
-				etat_suivant = C;
+			if ((io->gene_u == 9) && io->gene_pwm == AC_1K )
+			{	etat_suivant = C;
+				cout << "connection à la voiture\n" << endl;
+			}
 			else if (io->bouton_stop ==1)
-				etat_suivant = E;
-			printf("Etat B\n");
+			{	etat_suivant = E;
+				cout << "demande STOP\n" << endl;
+			}
 		}
 		else if (etat_present == C)
 		{
 			if(io->gene_u == 6)
-				etat_suivant = D;
-			else if( (io->bouton_stop==1)||(io->gene_u == 9) )
-				etat_suivant=E;
-			printf("Etat C\n");
+			{	etat_suivant = D;
+				cout << "charge en cours ...\n" <<endl;
+			}
+			else if(io->bouton_stop==1)
+			{	etat_suivant=E;
+				cout << "demande STOP\n" << endl;
+			}
 		}
 		else if (etat_present == D)
 		{
-			if( (io->bouton_stop==1)||(io->gene_u == 9) )
+			if( (io->bouton_stop==1)||(io->gene_u == 9) && (io->gene_pwm !=DC) )
+			{
 				etat_suivant=E;
-			printf("Etat D\n");
+				cout << "Fin de charge\n" << endl;
+			}
 		}
-	
+		else if (etat_present == E)
+		{
+			if (io->gene_pwm = DC)
+			{	etat_suivant =F;
+				cout << "recuperer vehicule\n" <<endl ;
+			}
+		}
+		//-----------------------------------------------------
+		else if (etat_present == F)
+		{	
+			attente_insertion_carte();
+			carte_id = lecture_numero_carte();
+			
+			if (lecteurcarte.get_id() == carte_id)
+			{
+				cout << "\n---\nID Correct\n---\n" <<endl;
+				if (baseclient.authentifier(carte_id)==1)
+				{
+					// authentification réussie
+					cout << "debrancher vehicule \n" << endl;
+					voyant.set_charge(0); // voyant charge : off
+					prise.deverouiller_trappe();
+					etat_suivant = deconnect;
+				}
+				else
+				{	//authentification echec
+					cout << "mauvais mdp \n" <<endl ;
+					cout << "retirer carte \n"<< endl;
+					attente_retrait_carte();
+					cout << "carte retiree\n" <<endl;
+					etat_suivant=F;
+				}
+			}
+			else
+			{
+				cout <<"CECI N'EST PAS VOTRE VEHICULE \n" <<endl;
+				cout <<"retirer carte et reessayer\n"<<endl;
+				attente_retrait_carte();
+				cout << "carte retiree\n" <<endl;
+				etat_suivant=F;
+			}
+		}
+		else if (etat_present == deconnect)
+		{
+			if ( (io->gene_u=12) && (io->gene_pwm = DC)
+			{
+				prise.verouiller_trappe();
+				cout << "retirer carte \n"<< endl;
+				attente_retrait_carte();
+				cout << "carte retiree\n" <<endl;
+				etat_suivant=END;
+			}
+		}
+		//-----------------------------------------------------
 		//Blok M : mémoire
 		etat_present = etat_suivant;
 
@@ -72,7 +136,7 @@ Generateur :: charger(Voyant voyant, Prise prise, Generateur generateur)
 
 		if(etat_present == B)
 		{
-			prise.set_Prise(1); // Voyant Prise => Vert
+			prise.set_prise(1); // Voyant Prise => Vert
 			prise.verouiller_trappe();
 			generateur.generer_PWM(2); // AC_1K output
 		}
@@ -91,25 +155,24 @@ Generateur :: charger(Voyant voyant, Prise prise, Generateur generateur)
 		{
 			generateur.ouvrir_AC();
 			voyant.set_charge(1); // Voyant charge => Vert
-			generateur.generer_PWM(1); // AC_CL output
-			printf("Etat E\n");
+			generateur.generer_PWM(1); // DC output
 		}
 	}
 }
-
-Generateur :: ouvrir_AC()
+*/
+void Generateur :: ouvrir_AC()
 {
 	io->contacteur_AC = 0;
 }
 
-Generateur :: fermer_AC()
+void Generateur :: fermer_AC()
 {
 	io->contacteur_AC = 1;
 }
 
 
 
-Generateur :: generer_PWM(int etat)
+void Generateur :: generer_PWM(int etat)
 {
 	switch(etat)
 	{

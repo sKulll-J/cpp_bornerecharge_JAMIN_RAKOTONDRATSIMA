@@ -1,2 +1,4 @@
 lecteurcarte.o: lecteurcarte.cpp lecteurcarte.h
-borne.o: borne.cpp lecteurcarte.h
+borne.o: borne.cpp lecteurcarte.h voyant.h voyant.cpp timer.h bouton.h \
+ bouton.cpp prise.h prise.cpp timer.cpp generateur.h generateur.cpp \
+ baseclient.h baseclient.cpp

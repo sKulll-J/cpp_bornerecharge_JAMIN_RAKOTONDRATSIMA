@@ -2,12 +2,11 @@
 #define BASECLIENT_H
 
 
-class Baseclient()
-{
+class Baseclient
+{	
+
     public : 
     int authentifier( int numero_carte ) ;
-    int reprise();
-
 };
 
 

@@ -4,9 +4,9 @@
 #include<memoire_borne.h>
 
 entrees* io ;
-int shmid ;
+//int shmid ;
 
-void Prise :: initialiser()
+Prise :: Prise()
 {
     io=acces_memoire(&shmid);
 }

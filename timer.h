@@ -4,8 +4,9 @@
 class Timer 
 {
     public : 
+
     Timer();
-    void raz();
-    int elapsed();
+    void raz(int *strt);
+    int elapsed(int* delta, int* strt);
 };
 #endif

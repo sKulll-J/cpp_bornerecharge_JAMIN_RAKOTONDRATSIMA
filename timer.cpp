@@ -7,8 +7,9 @@
 #include <time.h>
 
 
-entrees* io ;
-int shmid ;
+//entrees* io ;
+//int shmid ;
+
 int depart_timer ;
 
 time_t now ; // temps actuel
@@ -16,7 +17,7 @@ time_t start_time ;
 
 // ==========================================
 
-void Timer :: Timer()
+Timer :: Timer()
 {
     io=acces_memoire(&shmid);
 	now = time(NULL);
