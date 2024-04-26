@@ -33,19 +33,21 @@ int Baseclient :: authentifier( int numero_carte )
 	if(mdpToCheck!="")
 	{
 		string _mdp;
-		cout<<"Bonjour "<<ownerCarte<<" !\nVeuillez rentrer votre mot de passe :";
+		cout<<"...\n>Bonjour "<<ownerCarte<<" !\n!! Veuillez rentrer votre mot de passe :";
 		cin>>_mdp;
-		if(_mdp==mdp){
-			cout<<"Mot de passe validé\n";
+		
+		//cout<<_mdp<<" - "<<mdpToCheck<<endl;
+		if(_mdp==mdpToCheck){
+			cout<<">Mot de passe validé\n";
 			return 1; //si mdp valide
 		}
 		else
 		{
-			cout<<"Mot de passe non valide\nRetirez la carte puis rééseyez.\n";
+			cout<<"> mot de passe non valide\n!! Retirez la carte puis réésayez.\n";
 		}
 	}
 	else
-		cout<<"Numéro de carte inconnue.\nRetirez la carte puis rééseyez.\n";
+		cout<<">Numéro de carte inconnue.\n!! Retirez la carte puis rééseyez.\n";
 	
 	// attend une saisie de l'utilisateur de son mdp
 	// compare avec la base de donnée id_carte mdp

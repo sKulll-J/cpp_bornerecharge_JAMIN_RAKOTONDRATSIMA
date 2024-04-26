@@ -20,7 +20,7 @@ INCLDIRS =
 LIBDIRS = 
 
 #dependance librairie libsmartcard_borne (voir git)
-LIBS64 = -lsmartcardcpp_borne_x64 -lpcsclite
+LIBS64 = -lsmartcardcpp_borne_x64 -no-pie
 
 SRCS = lecteurcarte.cpp borne.cpp
 

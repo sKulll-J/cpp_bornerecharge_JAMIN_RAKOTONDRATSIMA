@@ -27,7 +27,7 @@ using namespace std;
 
 int shmid ;
 
-void charger(Voyant voyant, Prise prise, Generateur generateur, Baseclient baseclient, LecteurCarte lecteurcarte);
+void charger(Voyant voyant, Prise prise, Generateur generateur, Baseclient baseclient, LecteurCarte lecteurcarte, int carte_id);
 
 int main()
 {	
@@ -46,21 +46,21 @@ int main()
     while (1)
     {
 	// lecteurcarte.lire_carte();	// test 
-		
-	cout<<"==== \nnew Lecture\n"<<endl;
+	cout<< "\x1B[2J\x1B[H";
+	cout<<"==== \nLa Borne est préte a etre utiliser\n"<<endl;
 	
-	cout<<"Inserez votre carte"<<endl;
+	cout<<"!! Inserez votre carte"<<endl;
 	attente_insertion_carte();
 	
 	carte_id = lecture_numero_carte();
 	
-	cout<<">Carte insérée .." << endl << endl;
-	cout<<">Carte numéro " << lecture_numero_carte() << endl;
+	cout<<"\n<carte inseree>" << endl;
+	cout<<">carte numero " << lecture_numero_carte() << endl;
 	
 	if (database.authentifier(carte_id) == 1)
 	{	
 		// AUTHENTIFICATION REUSSIE
-		cout<< "Autentification réussie \n" <<endl ;
+		cout<< "\n>autentification reussie" <<endl ;
 	
 		timer.raz(&strt_timer);//mise a zero du timer
 		while( (bouton.charge() != 1) && (timer.elapsed(&time,&strt_timer) <=8))
@@ -75,21 +75,25 @@ int main()
 			
 			voyant.set_dispo(0);
 			
-			cout<< "retirer carte\n" << endl ;
+			cout<< "!! Retirer carte" << endl ;
 			attente_retrait_carte();
 
 		
 			//generateur.charger(voyant, prise, generateur); // charger
-			charger(voyant, prise, generateur, database, lecteurcarte);
+			charger(voyant, prise, generateur, database, lecteurcarte, carte_id);
 		}
 
 		else
 		{	// temps imparti écoulé
 			voyant.set_default(2);
-			cout<< "Temps ecoule\n"<< endl; 	
-			cout<< "retirer carte\n"<<endl;
+			cout<< "> temps ecoule"<< endl; 	
+			cout<< "!! Retirer carte"<<endl;
 			attente_retrait_carte();
-			cout<< "carte retiree \n"<<endl;
+			
+			voyant.set_charge(0);
+			voyant.set_default(0);
+			
+			cout<< "\n<carte retiree> \n"<<endl;
 		}
 	}
     }
@@ -97,7 +101,7 @@ int main()
     return 0;
 }
 
-void charger(Voyant voyant, Prise prise, Generateur generateur, Baseclient baseclient, LecteurCarte lecteurcarte )
+void charger(Voyant voyant, Prise prise, Generateur generateur, Baseclient baseclient, LecteurCarte lecteurcarte, int carte_id )
 {
 	voyant.set_charge(2); // Voyant charge => ROUGE
 	prise.deverouiller_trappe(); 
@@ -111,35 +115,35 @@ void charger(Voyant voyant, Prise prise, Generateur generateur, Baseclient basec
 	etat_present = A ;
 	etat_suivant = A ;
 	
-	cout << "Branchez la prise\n" << endl;
+	cout << "!! Branchez la prise\n" << endl;
 	while(etat_present!=END)
 	{
 		//Block F : transitions
 		if ((etat_present == A) && (io->gene_u == 9) && io->gene_pwm==DC)
 		{	etat_suivant = B ;
-			cout << ">prise branchee \n" << endl ;
+			cout << "<prise branchee>" << endl ;
 		}
 		
  		else if (etat_present == B)
 		{	
 			if ((io->gene_u == 9) && io->gene_pwm == AC_1K )
 			{	etat_suivant = C;
-				cout << "connection à la voiture\n" << endl;
+				cout << "> connection à la voiture" << endl;
 			}
 			else if (io->bouton_stop ==1)
 			{	etat_suivant = E;
-				cout << "demande STOP\n" << endl;
+				cout << "<STOP>\n" << endl;
 			}
 		}
 		else if (etat_present == C)
 		{
 			if(io->gene_u == 6)
 			{	etat_suivant = D;
-				cout << "charge en cours ...\n" <<endl;
+				cout << "> charge en cours ..." <<endl;
 			}
 			else if(io->bouton_stop==1)
 			{	etat_suivant=E;
-				cout << "demande STOP\n" << endl;
+				cout << "<STOP>\n" << endl;
 			}
 		}
 		else if (etat_present == D)
@@ -147,65 +151,73 @@ void charger(Voyant voyant, Prise prise, Generateur generateur, Baseclient basec
 			if( (io->bouton_stop==1) || (io->gene_u == 9) && (io->gene_pwm !=DC) )
 			{
 				etat_suivant=E;
-				cout << "Fin de charge\n" << endl;
+				cout << "> fin de charge" << endl;
 			}
 		}
 		else if (etat_present == E)
 		{
 			if (io->gene_pwm = DC)
 			{	etat_suivant =F;
-				cout << "recuperer vehicule\n" <<endl ;
+				
 			}
 		}
 		//-----------------------------------------------------
 		else if (etat_present == F)
 		{	
-			attente_insertion_carte();
-			int carte_id = lecture_numero_carte();
+			int _carte_id;
+			do{
+				cout<<"!! Inserez votre carte pour récupérer votre cehicule."<<endl;
+				attente_insertion_carte();
+				cout<<"\n<carte inseree>" << endl;
+				
+				_carte_id = lecture_numero_carte();
+				
+				if(_carte_id != carte_id)
+				{
+					cout<<"> Ceci n'est pas votre vehicule. \n!! Veuillez retirer votre carte et reessayer."<<endl;
+					attente_retrait_carte();
+					cout<<"\n<carte retiree>" << endl;
+				}
+			}while(_carte_id != carte_id);
 			
-			if (lecteurcarte.get_id() == carte_id)
-			{
-				cout << "\n---\nID Correct\n---\n" <<endl;
-				if (baseclient.authentifier(carte_id)==1)
+				if (baseclient.authentifier(_carte_id)==1)
 				{
 					// authentification réussie
-					cout << "debrancher vehicule \n" << endl;
+					cout << "!! Debranchez la prise du vehicule \n" << endl;
 					voyant.set_charge(0); // voyant charge : off
 					prise.deverouiller_trappe();
 					etat_suivant = deconnect;
 				}
 				else
 				{	//authentification echec
-					cout << "mauvais mdp \n" <<endl ;
-					cout << "retirer carte \n"<< endl;
+					//cout << "> mauvais mot de passe \n" ;
+					//cout << "!! Retirez carte et reesayez\n"<< endl;
 					attente_retrait_carte();
-					cout << "carte retiree\n" <<endl;
-					etat_suivant=F;
+					cout << "<carte retiree>" <<endl;
+					etat_suivant=D;
 				}
-			}
-			else
-			{
-				cout <<"CECI N'EST PAS VOTRE VEHICULE \n" <<endl;
-				cout <<"retirer carte et reessayer\n"<<endl;
-				attente_retrait_carte();
-				cout << "carte retiree\n" <<endl;
-				etat_suivant=F;
-			}
+			
 		}
 		else if (etat_present == deconnect)
 		{
-			if ( (io->gene_u=12) && (io->gene_pwm = DC) )
+			if ( (io->gene_u == 12) && (io->gene_pwm == DC) )
 			{
+				cout << "<prise retiree>"<< endl;
+				
 				prise.verouiller_trappe();
-				cout << "retirer carte \n"<< endl;
+				cout << "!! Retirer carte "<< endl;
 				attente_retrait_carte();
-				cout << "carte retiree\n" <<endl;
+				cout << "<carte retiree>\n" <<endl;
+				
+				prise.set_prise(2);
+				voyant.set_dispo(1);
 				etat_suivant=END;
 			}
 		}
 		//-----------------------------------------------------
 		//Blok M : mémoire
 		etat_present = etat_suivant;
+		sleep(1);
 
 		//Block G : sorties
 		if(etat_present == A)
